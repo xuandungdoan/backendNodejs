@@ -10,6 +10,10 @@ app.set('views', './views');
 app.get('/signin', (req, res) => res.render('signIn'));
 app.get('/signup', (req, res) => res.render('signUp'));
 
+app.get('/private', (req, res) => {
+    //use express-session
+});
+
 app.post('/signin', parser, (req, res) => {
 
 });
@@ -18,9 +22,4 @@ app.post('/signup', parser, (req, res) => {
     
 });
 
-app.post('/user', parser, async (req, res) => {
-    const user = new User(req.body);
-    await user.save();
-    res.send({ message: 'OK' });
-});
 module.exports = app;
