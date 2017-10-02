@@ -35,7 +35,8 @@ class User extends UserModel {
         if (!user) throw new Error('Email do not exist.');
         const same = await compare(password, user.password);
         if (!same) throw new Error('Password is invalid.');
-        return true;
+        const { name } = user;
+        return { email, name };
     }
 }
 
