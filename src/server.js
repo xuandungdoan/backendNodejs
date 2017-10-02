@@ -21,6 +21,10 @@ app.get('/vaorap', (req, res) => {
         return res.send('Moi xem phim');
     }
     return res.send('Ban phai mua ve');
+    // if (req.session.daMuaVe) return req.session.regenerate(() => {
+    //     return res.send('Moi xem phim');
+    // });
+    // return res.send('Ban phai mua ve');
 });
 
 app.listen(3000, () => console.log('Server started!'));
