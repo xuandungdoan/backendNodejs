@@ -6,7 +6,8 @@ const app = express();
 app.use(session({
     secret: 'alsdh93e9d927d',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { maxAge: 10000 }
 }));
 
 app.get('/muave', (req, res) => {
@@ -15,7 +16,10 @@ app.get('/muave', (req, res) => {
 });
 
 app.get('/vaorap', (req, res) => {
-    if (req.session.daMuaVe) return res.send('Moi xem phim');
+    if (req.session.daMuaVe) {
+        req.session.count = req.session.count ? req.session.count + 1 : 1;
+        return res.send('Moi xem phim');
+    }
     return res.send('Ban phai mua ve');
 });
 

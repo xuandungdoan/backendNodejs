@@ -7,6 +7,7 @@
     "rules": {
         "prefer-template": "off",
         "import/no-extraneous-dependencies": "off",
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "no-param-reassign": "off"
     }
 }
