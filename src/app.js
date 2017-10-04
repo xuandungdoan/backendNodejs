@@ -14,8 +14,22 @@ app.use(session({
     cookie: { maxAge: 30000 }
 }));
 
-app.get('/signin', (req, res) => res.render('signIn'));
-app.get('/signup', (req, res) => res.render('signUp'));
+// ai da sign in, thi khong duoc truy cap vao /signin, /signup
+// ai chua sign in, thi khong duoc truy cap vao /private
+
+const redirectSignedUser = (req, res, next) => {
+    if (req.session.daDangNhap) return res.redirect('/private');
+    next();
+};
+
+// app.use('/user', redirectSignedUser);
+
+const route = express.Router();
+route.use(redirectSignedUser);
+route.get('/signin', (req, res) => res.render('signIn'));
+route.get('/signup', (req, res) => res.render('signUp'));
+
+app.use('/user', route);
 
 app.get('/private', (req, res) => {
     //use express-session
@@ -25,6 +39,7 @@ app.get('/private', (req, res) => {
 });
 
 app.post('/signin', parser, (req, res) => {
+    if (req.session.daDangNhap) return res.redirect('/private');
     const { email, password } = req.body;
     User.signIn(email, password)
     .then(user => {
@@ -36,6 +51,7 @@ app.post('/signin', parser, (req, res) => {
 });
 
 app.post('/signup', parser, (req, res) => {
+    if (req.session.daDangNhap) return res.redirect('/private');
     const { email, password, name } = req.body;
     User.signUp(email, name, password)
     .then(() => res.send('Dang ky thanh cong!'))
