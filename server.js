@@ -1,23 +1,33 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 
 const app = express();
+app.use(cookieParser());
 
-app.use('/a', (req, res, next) => {
-    console.log('aaa');
-    next();
+app.get('/save', (req, res) => {
+    res.cookie('token', 'abcdef').send('Saved');
 });
 
-app.get('/a/b', (req, res) => {
-    res.send('Xong');
+app.get('/show', (req, res) => {
+    res.send('Token: ' + req.cookies.token);
 });
 
-app.get('/a', (req, res) => {
-    res.send('Xong');
-});
+// app.use('/a', (req, res, next) => {
+//     console.log('aaa');
+//     next();
+// });
 
-app.get('/a/b/c', (req, res) => {
-    res.send('Xong');
-});
+// app.get('/a/b', (req, res) => {
+//     res.send('Xong');
+// });
+
+// app.get('/a', (req, res) => {
+//     res.send('Xong');
+// });
+
+// app.get('/a/b/c', (req, res) => {
+//     res.send('Xong');
+// });
 
 // const loggerMidleware = (req, res, next) => {
 //     req.body = { name: 'Pho' };
