@@ -1,5 +1,6 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const { sign, verify } = require('./jwt');
 
 const app = express();
 app.use(cookieParser());
@@ -10,6 +11,23 @@ app.get('/save', (req, res) => {
 
 app.get('/show', (req, res) => {
     res.send('Token: ' + req.cookies.token);
+});
+
+app.get('/muave', (req, res) => {
+    sign({ daMuaVe: true })
+    .then(token => res.cookie('token', token).send('Ban da mua ve'));
+});
+
+app.get('/vaorap', (req, res) => {
+    const { token } = req.cookies;
+    if (!token) return res.send('Ban phai mua ve');
+    verify(token)
+    .then((obj) => {
+        delete obj.exp;
+        return sign(obj);
+    })
+    .then(newToken => res.cookie('token', newToken).send('Moi xem phim'))
+    .catch(() => res.send('Ban phai mua ve'));
 });
 
 // app.use('/a', (req, res, next) => {
